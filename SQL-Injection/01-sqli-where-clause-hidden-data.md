@@ -11,7 +11,7 @@
 ## 1. Analisis Celah Keamanan (Vulnerability Analysis)
 Aplikasi memiliki fitur filter kategori produk. Input dari pengguna pada parameter `?category=` langsung digabungkan ke dalam kueri SQL di sisi backend tanpa adanya proses sanitasi.
 
-### Perkiraan Kueri SQL Asli Backend:
+### Perkiraan Query SQL Asli Backend:
 ```sql
 SELECT * FROM products WHERE category = 'Gifts' AND released = 1
 ```
@@ -28,7 +28,8 @@ Host: 0acd003603b207e3817a2017009800e5.web-security-academy.net
 Suntikkan karakter petik tunggal (') di ujung parameter untuk menguji respons database: /filter?category=Gifts'. Aplikasi merespons dengan status HTTP 500 Internal Server Error. Hal ini membuktikan bahwa input kita berhasil merusak sintaksis kueri SQL di backend (indikasi awal celah SQLi).
 
 ### Injeksi Payload untuk Bypass Logika:
-Untuk memanipulasi Query agar selalu menghasilkan nilai benar sekaligus mengabaikan kondisi pengecekan rilis produk, masukkan payload ini pada parameter kategori: 
+Untuk memanipulasi query agar selalu menghasilkan nilai benar sekaligus mengabaikan kondisi pengecekan rilis produk, masukkan payload ini pada parameter kategori: 
+
 GET /filter?category=Gifts%27+OR+1%3D1-- HTTP/1.1
 Host: 0acd003603b207e3817a2017009800e5.web-security-academy.net
 
