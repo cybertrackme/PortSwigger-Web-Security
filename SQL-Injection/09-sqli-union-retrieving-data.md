@@ -48,7 +48,6 @@ Setelah request dikirim, aplikasi merespons dengan status HTTP 200 OK. Pada stru
      <td>
         ucn2rcuqzkshq26is7rb
     </td>
-
 </tr>
 ```
 Hasil Akhir: Cari baris data milik user administrator, salin kredensial password tersebut, lalu gunakan pada halaman login aplikasi. Login berhasil dan lab dinyatakan selesai (Solved).
