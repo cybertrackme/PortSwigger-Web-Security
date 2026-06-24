@@ -49,27 +49,3 @@ Karakter petik tunggal (') menutup input untuk kolom username secara paksa.
 Karakter -- bertindak sebagai perintah comment yang mematikan dan mengabaikan sisa kueri pemeriksaan password di belakangnya (' AND password = 'test').
 
 Hasil Akhir: Database mengembalikan hasil bahwa user administrator ditemukan (bernilai TRUE). Aplikasi merespons dengan HTTP 302 Found (Redirect) dan memberikan session cookie baru. Login bypass berhasil dan lab dinyatakan Solved.
-
----
-
-## 3. Rekomendasi Perbaikan
-Untuk mencegah serangan Login Bypass berbasis SQLi, tim developer wajib mengimplementasikan Parameterized Queries (Prepared Statements) pada fungsi autentikasi.
-
-Contoh Implementasi Perbaikan Kode (PHP PDO):
-
-Daripada menggunakan kode rentan yang menggabungkan input secara langsung:
-// KODE RENTAN (VULNERABLE)
-```
-$query = "SELECT * FROM users WHERE username = '" . $_POST['username'] . "' AND password = '" . $_POST['password'] . "'";
-$db->query($query);
-```
-
-Developer harus mengubahnya menggunakan Prepared Statement:
-// KODE AMAN (SECURE)
-```
-$stmt = $db->prepare('SELECT * FROM users WHERE username = :username AND password = :password');
-$stmt->execute([
-    'username' => $_POST['username'],
-    'password' => $_POST['password']
-]);
-```

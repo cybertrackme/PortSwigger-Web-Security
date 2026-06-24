@@ -57,15 +57,3 @@ Di sisi backend database, kueri dimanipulasi secara penuh menjadi:
 SELECT * FROM products WHERE category = 'Food+%26+Drink' UNION SELECT username_srjpjw, password_enhdly FROM users_zsjkvc--' AND released = 1
 ```
 Hasil Akhir: Aplikasi menampilkan daftar seluruh user dan password teks murni (plain text) di layar. Cari baris milik user administrator, salin password-nya, dan gunakan untuk login. Lab berhasil diselesaikan (Solved).
-
----
-
-## 3. Rekomendasi Perbaikan
-Dampak dari serangan ini sangat destruktif karena penyerang dapat membaca seluruh isi basis data. Solusi mutlak untuk menghentikan injeksi ini adalah menerapkan Parameterized Queries (Prepared Statements).
-Contoh Implementasi Perbaikan Kode (PHP PDO):
-```
-// KODE AMAN (SECURE)
-$stmt = $db->prepare('SELECT * FROM products WHERE category = :category AND released = 1');
-$stmt->execute(['category' => $_GET['category']]);
-```
-Dengan memisahkan struktur logika kueri SQL dari parameter input, karakter pembobol seperti ' UNION... tidak akan pernah dieksekusi sebagai perintah pencarian database oleh sistem.

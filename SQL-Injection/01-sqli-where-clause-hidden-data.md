@@ -44,23 +44,3 @@ Kondisi OR 1=1 memaksa seluruh baris data pada tabel produk bernilai TRUE.
 Karakter -- bertindak sebagai perintah comment yang mematikan sisa query di belakangnya (AND released = 1).
 
 Hasil Akhir: Aplikasi menampilkan seluruh produk yang ada di database, termasuk produk tersembunyi yang belum dirilis. Lab berhasil diselesaikan (Solved).
-
----
-
-## 3. Rekomendasi Perbaikan
-Untuk menutup celah keamanan ini, tim developer wajib mengganti pembuatan query dinamis dengan metode Parameterized Queries (Prepared Statements).
-Contoh Implementasi Perbaikan Kode (PHP PDO):
-
-Daripada menggunakan kode rentan yang menggabungkan variabel langsung:
-// KODE RENTAN (VULNERABLE)
-```
-$query = "SELECT * FROM products WHERE category = '" . $_GET['category'] . "' AND released = 1";
-$db->query($query);
-```
-
-Developer harus mengubahnya menggunakan Prepared Statement:
-// KODE AMAN (SECURE)
-```
-$stmt = $db->prepare('SELECT * FROM products WHERE category = :category AND released = 1');
-$stmt->execute(['category' => $_GET['category']]);
-```

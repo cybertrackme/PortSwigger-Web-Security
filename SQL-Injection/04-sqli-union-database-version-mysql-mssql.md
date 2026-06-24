@@ -55,23 +55,3 @@ Di sisi database backend (asumsi MySQL), kueri dimanipulasi menjadi:
 SELECT * FROM products WHERE category = 'Gifts' UNION SELECT @@version, NULL-- ' AND released = 1
 ```
 Hasil Akhir: Aplikasi menampilkan teks versi database (misalnya: 8.0.x-log untuk MySQL atau informasi spesifik edisi Microsoft SQL Server) pada layar. Lab berhasil diselesaikan (Solved)
-
----
-
-## 3. Rekomendasi Perbaikan
-Sama seperti kasus UNION lainnya, celah ini dapat ditutup secara total dengan mengganti kueri dinamis menggunakan Parameterized Queries (Prepared Statements).
-Contoh Implementasi Perbaikan Kode (PHP PDO):
-
-Daripada menggunakan kueri mentah yang rentan terhadap manipulasi UNION:
-// KODE RENTAN (VULNERABLE)
-```
-$query = "SELECT * FROM products WHERE category = '" . $_GET['category'] . "' AND released = 1";
-$db->query($query);
-```
-
-Developer wajib menggunakan Prepared Statement yang secara otomatis melakukan pemisahan data dan instruksi logika pada MySQL/MSSQL:
-// KODE AMAN (SECURE)
-```
-$stmt = $db->prepare('SELECT * FROM products WHERE category = :category AND released = 1');
-$stmt->execute(['category' => $_GET['category']]);
-```

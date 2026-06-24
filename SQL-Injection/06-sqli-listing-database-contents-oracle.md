@@ -54,19 +54,3 @@ Di sisi backend database Oracle, kueri dimanipulasi secara penuh menjadi:
 SELECT * FROM products WHERE category = 'Gifts' UNION SELECT USERNAME_UXXQGP, PASSWORD_OHZQKG FROM USERS_HIGFND--' AND released = 1
 ```
 Hasil Akhir: Aplikasi menampilkan daftar seluruh user dan password teks murni di layar. Cari baris milik user administrator, salin password-nya, dan gunakan untuk login. Lab berhasil diselesaikan (Solved).
-
----
-
-## 3. Rekomendasi Perbaikan
-Untuk menutup celah keamanan eksfiltrasi data pada Oracle ini, tim developer wajib mengganti kueri dinamis dengan metode Parameterized Queries (Prepared Statements) menggunakan ekstensi pengemudi (driver) Oracle yang aman seperti OCI8 atau PDO Oracle.
-Contoh Implementasi Perbaikan Kode (PHP dengan OCI8):
-// KODE AMAN (SECURE)
-```
-$query = "SELECT * FROM products WHERE category = :category AND released = 1";
-$statement = oci_parse($conn, $query);
-
-// Menggunakan oci_bind_by_name untuk memastikan input diperlakukan sebagai string murni
-oci_bind_by_name($statement, ":category", $_GET['category']);
-oci_execute($statement);
-```
-Melalui metode binding parameter ini, karakter khusus seperti ' UNION tidak akan pernah diinterpretasikan oleh mesin database Oracle sebagai bagian dari instruksi kueri logika logika.

